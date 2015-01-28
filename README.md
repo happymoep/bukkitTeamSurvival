@@ -21,7 +21,7 @@ Command structure
 		- `remove <Teamname>` Remove Team with name `Teamname`
 		- `put <Player> <Teamname>` Put Player named `Player` into `Teamname`
 		- `pull <Player> <Teamname>` Pull Player named `Player` out of `Teamname`
-		- `color {color} <Teamname>` Set color `color` for `Teamname` (see [this]("http://minecraft.gamepedia.com/Formatting_codes") for colors)
+		- `color {color} <Teamname>` Set color `color` for `Teamname` (see [this](minecraft.gamepedia.com/Formatting_codes) for colors)
 		- `list <Teamname>` List members of `Teamname`
 	- `teams` Commands regarding **all** Teams
 		- `list` Lists all teams
