@@ -10,6 +10,28 @@ It creates a world with fixed border and teams of two players each.
 
 The world is deleted afterwards to ensure that you always get new terrain, ores, animals and chances to win :wink:
 
+Command structure
+-----------------
+
+*/ts*
+
+- `setup` Setup commands
+	- `team` Commands regarding **one** Team
+		- `add <Teamname>` Add Team with name `Teamname`
+		- `remove <Teamname>` Remove Team with name `Teamname`
+		- `put <Player> <Teamname>` Put Player named `Player` into `Teamname`
+		- `pull <Player> <Teamname>` Pull Player named `Player` out of `Teamname`
+		- `color {color} <Teamname>` Set color `color` for `Teamname` (see [this]("http://minecraft.gamepedia.com/Formatting_codes") for colors)
+		- `list <Teamname>` List members of `Teamname`
+	- `teams` Commands regarding **all** Teams
+		- `list` Lists all teams
+		- `showLabels {bool}` Set the label visibility
+		- `teamLives {int}` Sets the lives a team has before passing out
+		- `loyality {bool}` Sets wether a team drops out if **one** team member dies.
+		- `teamHit {bool}` Sets friendly fire (players of the same team harm each other, eg. accidentally)
+- `start` Start the Team Survival!
+- `stop` Terminate Team Survival round.
+
 Todo
 ----
 
