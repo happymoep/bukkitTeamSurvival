@@ -4,7 +4,7 @@
 What?
 -----
 
-This is a plugin for the [Minecraft]("http://minecraft.net") [Bukkit]("http://bukkit.org") server.
+This is a plugin for the [Minecraft](http://minecraft.net) [Bukkit](http://bukkit.org) server.
 
 It creates a world with fixed border and teams of two players each.
 
