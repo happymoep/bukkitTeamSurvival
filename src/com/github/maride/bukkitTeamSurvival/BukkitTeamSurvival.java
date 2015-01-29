@@ -18,6 +18,11 @@ public class BukkitTeamSurvival extends JavaPlugin {
 	ScoreboardManager	manager	= null;	// Assigned when plugin gets enabled
 	Scoreboard			board	= null;	// Assigned when plugin gets enabled
 	
+	boolean showLabels = true;
+	int teamLives = 2;
+	boolean loyalty = false;
+	boolean teamHit = false;
+	
 	public void onEnable(){ 
 		manager = Bukkit.getScoreboardManager();
 		board = manager.getNewScoreboard();
@@ -206,7 +211,8 @@ public class BukkitTeamSurvival extends JavaPlugin {
 						sender.sendMessage("Listing teams.");
 					} else if(args[2].equalsIgnoreCase("showLabels")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams showLabels <yes|no>");
+							sender.sendMessage("showLabels is set to " + (showLabels?"YES":"NO"));
+							//sender.sendMessage("Usage: /ts setup teams showLabels <yes|no>");
 							return true;
 						}
 						
@@ -216,9 +222,11 @@ public class BukkitTeamSurvival extends JavaPlugin {
 						}
 
 						sender.sendMessage("Setting showLabels to " + args[3]);
+						showLabels = args[3].equalsIgnoreCase("yes");
 					} else if(args[2].equalsIgnoreCase("teamLives")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams teamLives <number>");
+							sender.sendMessage("teamLives is set to " + teamLives);
+							//sender.sendMessage("Usage: /ts setup teams teamLives <number>");
 							return true;
 						}
 						int lives = Integer.parseInt(args[3]);
@@ -227,9 +235,11 @@ public class BukkitTeamSurvival extends JavaPlugin {
 							return true;
 						}
 						sender.sendMessage("Setting teamLives to " + args[3]);
+						teamLives = lives;
 					} else if(args[2].equalsIgnoreCase("loyalty")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams loyalty <yes|no>");
+							sender.sendMessage("loyalty is set to " + (loyalty?"YES":"NO"));
+							//sender.sendMessage("Usage: /ts setup teams loyalty <yes|no>");
 							return true;
 						}
 						
@@ -239,9 +249,11 @@ public class BukkitTeamSurvival extends JavaPlugin {
 						}
 
 						sender.sendMessage("Setting loyalty to " + args[3]);
+						loyalty = args[3].equalsIgnoreCase("yes");
 					} else if(args[2].equalsIgnoreCase("teamHit")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams teamHit <yes|no>");
+							sender.sendMessage("teamHit is set to " + (teamHit?"YES":"NO"));
+							//sender.sendMessage("Usage: /ts setup teams teamHit <yes|no>");
 							return true;
 						}
 						
@@ -251,6 +263,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 						}
 
 						sender.sendMessage("Setting teamHit to " + args[3]);
+						teamHit = args[3].equalsIgnoreCase("yes");
 					} else {
 						sender.sendMessage("ts: No such teams command: " + args[2]);
 					}
