@@ -197,12 +197,12 @@ public class BukkitTeamSurvival extends JavaPlugin {
 							return true;
 						}
 						sender.sendMessage("Setting teamLives to " + args[3]);
-					} else if(args[2].equalsIgnoreCase("loyality")) {
+					} else if(args[2].equalsIgnoreCase("loyalty")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams loyality <yes|no>");
+							sender.sendMessage("Usage: /ts setup teams loyalty <yes|no>");
 							return true;
 						}
-						sender.sendMessage("Setting loyality to " + args[3]);
+						sender.sendMessage("Setting loyalty to " + args[3]);
 					} else if(args[2].equalsIgnoreCase("teamHit")) {
 						if(args.length <= 3) {
 							sender.sendMessage("Usage: /ts setup teams teamHit <yes|no>");
