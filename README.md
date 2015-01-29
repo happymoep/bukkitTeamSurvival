@@ -17,18 +17,18 @@ Command structure
 
 - `setup` Setup commands
 	- `team` Commands regarding **one** Team
-		- `add <Teamname>` Add Team with name `Teamname`
-		- `remove <Teamname>` Remove Team with name `Teamname`
-		- `put <Player> <Teamname>` Put Player named `Player` into `Teamname`
-		- `pull <Player> <Teamname>` Pull Player named `Player` out of `Teamname`
-		- `color {color} <Teamname>` Set color `color` for `Teamname` (see [this](minecraft.gamepedia.com/Formatting_codes) for colors)
-		- `list <Teamname>` List members of `Teamname`
+		- `create <teamname>` Create team with name `teamname`
+		- `delete <teamname>` Delete team with name `teamname`
+		- `add <teamname> <player> [player2 [...]]` Add player(s) to `teamname`
+		- `remove <teamname> <player> [player2 [...]]` Remove player(s) from `teamname`
+		- `color <teamname> <color>` Set color `color` for `teamname` (see [this](minecraft.gamepedia.com/Formatting_codes) for colors)
+		- `list <teamname>` List members of `teamname`
 	- `teams` Commands regarding **all** Teams
 		- `list` Lists all teams
-		- `showLabels {bool}` Set the label visibility
-		- `teamLives {int}` Sets the lives a team has before passing out
-		- `loyality {bool}` Sets wether a team drops out if **one** team member dies.
-		- `teamHit {bool}` Sets friendly fire (players of the same team harm each other, eg. accidentally)
+		- `showLabels <yes|no>` Set the label visibility
+		- `teamLives <amount>` Sets the amount of lives a team has before passing out
+		- `loyalty <yes|no>` Sets whether a team drops out if **one** team member dies.
+		- `teamHit <yes|no>` Sets friendly fire (players of the same team harm each other, eg. accidentally)
 - `start` Start the Team Survival!
 - `stop` Terminate Team Survival round.
 

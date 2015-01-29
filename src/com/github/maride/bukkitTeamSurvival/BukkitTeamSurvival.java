@@ -19,8 +19,8 @@ public class BukkitTeamSurvival extends JavaPlugin {
 	Scoreboard board = null;
 	
 	public void onEnable(){ 
-		ScoreboardManager manager = Bukkit.getScoreboardManager();
-		Scoreboard board = manager.getNewScoreboard();
+		manager = Bukkit.getScoreboardManager();
+		board = manager.getNewScoreboard();
 		//System.out.println("BukkitTeamSurvival enabled."); //Discouraged as bukkit should do this automatically
 	}
 
