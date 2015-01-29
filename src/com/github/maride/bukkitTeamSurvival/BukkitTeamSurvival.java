@@ -15,17 +15,19 @@ import org.bukkit.scoreboard.Team;
 
 public class BukkitTeamSurvival extends JavaPlugin {
 	
-	ScoreboardManager manager = null;
-	Scoreboard board = null;
+	ScoreboardManager	manager	= null;	// Assigned when plugin gets enabled
+	Scoreboard			board	= null;	// Assigned when plugin gets enabled
 	
 	public void onEnable(){ 
 		manager = Bukkit.getScoreboardManager();
 		board = manager.getNewScoreboard();
-		//System.out.println("BukkitTeamSurvival enabled."); //Discouraged as bukkit should do this automatically
 	}
 
 	public void onDisable(){ 
-		//System.out.println("BukkitTeamSurvival disabled."); //Discouraged as bukkit should do this automatically
+		/* TODO:
+		 * 	Clear scoreboard (destroy scoreboard?)
+		 * 	Revert team setup
+		 */
 	}
 
 	@Override

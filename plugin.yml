@@ -6,6 +6,8 @@ website: https://github.com/maride/bukkitTeamSurvival
 
 main: com.github.maride.bukkitTeamSurvival.BukkitTeamSurvival
 
+prefix: BTS
+
 commands:
    ts:
       description: Main TeamSurvival command

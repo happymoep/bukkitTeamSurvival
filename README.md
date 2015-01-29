@@ -36,7 +36,7 @@ Todo
 ----
 
 - Automatic world generation
-- Restrict players after join to gamemode 2 (Spectator)
+- Restrict players after join to gamemode 3 (Spectator)
 - Inform players about:
 	- Player count
 	- Team setup
@@ -49,11 +49,11 @@ Todo
 	- Set up scoreboard
 - On death of a player, ...
 	- Clear inventory
-	- Set gamemode to 2 (Spectator)
+	- Set gamemode to 3 (Spectator)
 	- Allow teleportation to the lobby
 	- Remove from scoreboard
 - On team win, ...
 	- Teleport all players to lobby
-	- Set all gamemodes to 2 (Spectator)
+	- Set all gamemodes to 3 (Spectator)
 	- Remove scoreboard
 	- Fireworks. :fireworks:
