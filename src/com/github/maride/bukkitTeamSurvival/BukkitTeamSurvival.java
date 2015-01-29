@@ -7,30 +7,30 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class BukkitTeamSurvival extends JavaPlugin {
 
 	public void onEnable(){ 
-		System.out.println("BukkitTeamSurvival enabled.");
+		//System.out.println("BukkitTeamSurvival enabled."); //Discouraged as bukkit should do this automatically
 	}
 
 	public void onDisable(){ 
-		System.out.println("BukkitTeamSurvival disabled.");
+		//System.out.println("BukkitTeamSurvival disabled."); //Discouraged as bukkit should do this automatically
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(cmd.getName().equalsIgnoreCase("ts")) {
 			if(args.length == 0) {
-				sender.sendMessage("Usage: /ts {setup|start|stop}");
+				sender.sendMessage("Usage: /ts <setup|start|stop>");
 				return true;
 			}
 
 			if(args[0].equalsIgnoreCase("setup")) {
 				if(args.length <= 1) {
-					sender.sendMessage("Usage: /ts setup {team|teams}");
+					sender.sendMessage("Usage: /ts setup <team|teams>");
 					return true;
 				}
 
 				if(args[1].equalsIgnoreCase("team")) {
 					if(args.length <= 2) {
-						sender.sendMessage("Usage: /ts setup team {add|remove|put|pull|color|list}");
+						sender.sendMessage("Usage: /ts setup team <add|remove|put|pull|color|list>");
 						return true;
 					}
 
@@ -60,7 +60,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 						sender.sendMessage("Pulling " + args[3] + " from " + args[4]);
 					} else if(args[2].equalsIgnoreCase("color")) {
 						if(args.length <= 4) {
-							sender.sendMessage("Usage: /ts setup team color {color} <Teamname>");
+							sender.sendMessage("Usage: /ts setup team color <color> <Teamname>");
 							return true;
 						}
 						sender.sendMessage("Coloring " + args[4] + " in " + args[3]);
@@ -75,7 +75,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 					}
 				} else if(args[1].equalsIgnoreCase("teams")) {
 					if(args.length <= 2) {
-						sender.sendMessage("Usage: /ts setup teams {list|showLabels|teamLives|loyality|teamHit}");
+						sender.sendMessage("Usage: /ts setup teams <list|showLabels|teamLives|loyality|teamHit>");
 						return true;
 					}
 
@@ -83,25 +83,25 @@ public class BukkitTeamSurvival extends JavaPlugin {
 						sender.sendMessage("Listing teams.");
 					} else if(args[2].equalsIgnoreCase("showLabels")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams showLabels {yes|no}");
+							sender.sendMessage("Usage: /ts setup teams showLabels <yes|no>");
 							return true;
 						}
 						sender.sendMessage("Setting showLabels to " + args[3]);
 					} else if(args[2].equalsIgnoreCase("teamLives")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams teamLives {number}");
+							sender.sendMessage("Usage: /ts setup teams teamLives <number>");
 							return true;
 						}
 						sender.sendMessage("Setting teamLives to " + args[3]);
 					} else if(args[2].equalsIgnoreCase("loyality")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams loyality {yes|no}");
+							sender.sendMessage("Usage: /ts setup teams loyality <yes|no>");
 							return true;
 						}
 						sender.sendMessage("Setting loyality to " + args[3]);
 					} else if(args[2].equalsIgnoreCase("teamHit")) {
 						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup teams teamHit {yes|no}");
+							sender.sendMessage("Usage: /ts setup teams teamHit <yes|no>");
 							return true;
 						}
 						sender.sendMessage("Setting teamHit to " + args[3]);
