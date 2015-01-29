@@ -1,3 +1,10 @@
 name: BukkitTeamSurvival
 main: com.github.maride.bukkitTeamSurvival.BukkitTeamSurvival
 version: 0.1
+
+commands:
+   ts:
+      description: Main TeamSurvival command
+      usage: /ts {setup|start|stop}
+      permission: bukkitTeamSurvival.ts
+      permission-message: You don't have permission bukkitTeamSurvival.ts
