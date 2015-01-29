@@ -1,10 +1,21 @@
 name: BukkitTeamSurvival
-main: com.github.maride.bukkitTeamSurvival.BukkitTeamSurvival
 version: 0.1
+description: This plugin helps set up a team deathmatch.
+authors: [happymoep, maride]
+website: https://github.com/maride/bukkitTeamSurvival
+
+main: com.github.maride.bukkitTeamSurvival.BukkitTeamSurvival
+
+prefix: BTS
 
 commands:
    ts:
       description: Main TeamSurvival command
-      usage: /ts {setup|start|stop}
+      usage: /ts <setup|start|stop>
       permission: bukkitTeamSurvival.ts
       permission-message: You don't have permission bukkitTeamSurvival.ts
+
+permissions:
+   bukkitTeamSurvival.ts:
+      description: Allows you to configure the plugin
+      default: op
