@@ -21,7 +21,7 @@ Command structure
 		- `delete <teamname>` Delete team with name `teamname`
 		- `add <teamname> <player> [player2 [...]]` Add player(s) to `teamname`
 		- `remove <teamname> <player> [player2 [...]]` Remove player(s) from `teamname`
-		- `color <teamname> <color>` Set color `color` for `teamname` (see [this](minecraft.gamepedia.com/Formatting_codes) for colors)
+		- `color <teamname> <color>` Set color `color` for `teamname` (see [this](http://minecraft.gamepedia.com/Formatting_codes) for colors)
 		- `list <teamname>` List members of `teamname`
 	- `teams` Commands regarding **all** Teams
 		- `list` Lists all teams
