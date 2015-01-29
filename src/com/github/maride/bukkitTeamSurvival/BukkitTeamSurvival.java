@@ -29,6 +29,25 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		 * 	Revert team setup
 		 */
 	}
+	
+	public void startGame() {
+		/* TODO:
+		 *  Clear inventory
+		 *  Clear hunger
+		 *  Clear HP and XP
+		 *  Spread teams (!)
+		 *  Set gamemode to Survival
+		 */
+	}
+	
+	public void endGame() {
+		/* TODO:
+		 *  Clear inventory
+		 *  Set gamemode to Spectator
+		 *  Teleport to lobby
+		 *  Remove scoreboard
+		 */
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -190,10 +209,21 @@ public class BukkitTeamSurvival extends JavaPlugin {
 							sender.sendMessage("Usage: /ts setup teams showLabels <yes|no>");
 							return true;
 						}
+						
+						if(!args[3].equalsIgnoreCase("yes") && !args[3].equalsIgnoreCase("no")) {
+							sender.sendMessage("Argument must be 'yes' or 'no'. (Not " + args[3] + ")");
+							return true;
+						}
+
 						sender.sendMessage("Setting showLabels to " + args[3]);
 					} else if(args[2].equalsIgnoreCase("teamLives")) {
 						if(args.length <= 3) {
 							sender.sendMessage("Usage: /ts setup teams teamLives <number>");
+							return true;
+						}
+						int lives = Integer.parseInt(args[3]);
+						if(lives<0) {
+							sender.sendMessage("Argument must be equal or greater than 0. (Not " + args[3] + ")");
 							return true;
 						}
 						sender.sendMessage("Setting teamLives to " + args[3]);
@@ -202,12 +232,24 @@ public class BukkitTeamSurvival extends JavaPlugin {
 							sender.sendMessage("Usage: /ts setup teams loyalty <yes|no>");
 							return true;
 						}
+						
+						if(!args[3].equalsIgnoreCase("yes") && !args[3].equalsIgnoreCase("no")) {
+							sender.sendMessage("Argument must be 'yes' or 'no'. (Not " + args[3] + ")");
+							return true;
+						}
+
 						sender.sendMessage("Setting loyalty to " + args[3]);
 					} else if(args[2].equalsIgnoreCase("teamHit")) {
 						if(args.length <= 3) {
 							sender.sendMessage("Usage: /ts setup teams teamHit <yes|no>");
 							return true;
 						}
+						
+						if(!args[3].equalsIgnoreCase("yes") && !args[3].equalsIgnoreCase("no")) {
+							sender.sendMessage("Argument must be 'yes' or 'no'. (Not " + args[3] + ")");
+							return true;
+						}
+
 						sender.sendMessage("Setting teamHit to " + args[3]);
 					} else {
 						sender.sendMessage("ts: No such teams command: " + args[2]);
