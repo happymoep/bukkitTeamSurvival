@@ -16,7 +16,6 @@ public class BukkitTeamSurvival extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		System.out.println(cmd.getName());
 		if(cmd.getName().equalsIgnoreCase("ts")) {
 			if(args.length == 0) {
 				sender.sendMessage("Usage: /ts {setup|start|stop}");
