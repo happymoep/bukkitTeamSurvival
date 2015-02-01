@@ -1,11 +1,11 @@
 package com.github.maride.bukkitTeamSurvival;
 
-import com.github.maride.bukkitTeamSurvival.btsPlayer;
+import com.github.maride.bukkitTeamSurvival.BtsPlayer;
 
-public class btsTeam {
-	btsPlayer[] members;
+public class BtsTeam {
+	BtsPlayer[] members;
 	
-	public void addPlayer(btsPlayer thisPlayer) {
+	public void addPlayer(BtsPlayer thisPlayer) {
 		if(thisPlayer.team != null) {
 			// already got a team
 			thisPlayer.team.removePlayer(thisPlayer);
@@ -14,7 +14,7 @@ public class btsTeam {
 		// add to members
 	}
 	
-	public void removePlayer(btsPlayer thisPlayer) {
+	public void removePlayer(BtsPlayer thisPlayer) {
 		// remove from members
 	}
 }
