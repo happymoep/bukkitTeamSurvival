@@ -1,20 +1,24 @@
 package com.github.maride.bukkitTeamSurvival;
 
-import com.github.maride.bukkitTeamSurvival.BtsPlayer;
+import org.bukkit.Color;
 
 public class BtsTeam {
-	BtsPlayer[] members;
+	private	String	name;
+	private	Color	color;
 	
-	public void addPlayer(BtsPlayer thisPlayer) {
-		if(thisPlayer.team != null) {
-			// already got a team
-			thisPlayer.team.removePlayer(thisPlayer);
-			thisPlayer.team = this;
-		}
-		// add to members
+	public String getName() {
+		return name;
 	}
-	
-	public void removePlayer(BtsPlayer thisPlayer) {
-		// remove from members
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

@@ -4,9 +4,10 @@ import com.github.maride.bukkitTeamSurvival.BtsTeam;
 import org.bukkit.entity.Player;
 
 public class BtsPlayer {
-	BtsTeam team;
-	private String name;
-	private Player entity;
+
+	private	String	name;
+	private Player	entity;
+	private	BtsTeam	team;
 
 	public BtsPlayer(String playerName) {
 		// this(Server.getPlayer(playerName));
@@ -29,4 +30,25 @@ public class BtsPlayer {
 	public String getName() {
 		return name;
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Player getEntity() {
+		return entity;
+	}
+
+	public void setEntity(Player entity) {
+		this.entity = entity;
+	}
+
+	public BtsTeam getTeam() {
+		return team;
+	}
+
+	public void setTeam(BtsTeam team) {
+		this.team = team;
+	}
+
 }
