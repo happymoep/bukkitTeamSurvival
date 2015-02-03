@@ -189,6 +189,8 @@ public class BukkitTeamSurvivalCommandExecutor implements CommandExecutor{
 							return true;
 						}
 						ChatColor color = ChatColor.valueOf(args[4]);
+//						if(!color.isColor())
+//							return true;	// TODO: Inform commandSender of this
 						plugin.setTeamColor(args[3], color);
 						sender.sendMessage("Coloring " + args[3] + " in " + color.toString());
 						return true;
