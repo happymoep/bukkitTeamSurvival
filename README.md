@@ -17,14 +17,11 @@ Command structure
 
 - `setup` Setup commands
 	- `team` Commands regarding **one** Team
-		- `create <teamname>` Create team with name `teamname`
-		- `delete <teamname>` Delete team with name `teamname`
 		- `add <teamname> <player> [player2 [...]]` Add player(s) to `teamname`
 		- `remove <teamname> <player> [player2 [...]]` Remove player(s) from `teamname`
 		- `color <teamname> <color>` Set color `color` for `teamname` (see [this](http://minecraft.gamepedia.com/Formatting_codes) for colors)
 		- `list <teamname>` List members of `teamname`
 	- `teams` Commands regarding **all** Teams
-		- `list` Lists all teams
 		- `showLabels <yes|no>` Set the label visibility
 		- `teamLives <amount>` Sets the amount of lives a team has before passing out
 		- `loyalty <yes|no>` Sets whether a team drops out if **one** team member dies.
