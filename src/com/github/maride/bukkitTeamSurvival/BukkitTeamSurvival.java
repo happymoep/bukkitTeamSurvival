@@ -1,48 +1,121 @@
 package com.github.maride.bukkitTeamSurvival;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.NameTagVisibility;
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 public class BukkitTeamSurvival extends JavaPlugin {
 	
+	private BukkitTeamSurvivalCommandExecutor cmdExecutor;
 	ScoreboardManager	manager	= null;	// Assigned when plugin gets enabled
 	Scoreboard			board	= null;	// Assigned when plugin gets enabled
 	
-	boolean showLabels = true;
-	int teamLives = 2;
-	boolean loyalty = false;
-	boolean teamHit = false;
+	HashMap<UUID, String>		playerTeams;
+	HashMap<String, ChatColor>	teamColors;
+	//ArrayList<BtsTeam>		teams;
 	
-	public void onEnable(){ 
+	boolean	showLabels	= false;
+	int		teamLives	= 2;
+	boolean	loyalty		= false;
+	boolean	teamHit		= false;
+	
+	public void onEnable() {
+		// Load HashMap that stores a teamname for each Player
+		// TODO: Load HashMap from file (if available) instead of creating a new one
+		playerTeams = new HashMap<UUID, String>();
+		teamColors = new HashMap<String, ChatColor>();
+		
+		// Register command handler
+		cmdExecutor = new BukkitTeamSurvivalCommandExecutor(this);
+		getCommand("ts").setExecutor(cmdExecutor);
+		
+		// Get the scoreboard to be used
 		manager = Bukkit.getScoreboardManager();
 		board = manager.getNewScoreboard();
 	}
 
-	public void onDisable(){ 
+	public void onDisable() {
+		// Save HashMap that stores  a teamname for each Player
+		// TODO: Save HashMap to file
+
 		/* TODO:
 		 * 	Clear scoreboard (destroy scoreboard?)
 		 * 	Revert team setup
 		 */
 	}
 	
+	public void setPlayerTeam(UUID uuid, String teamname) {
+		if(teamname != null)
+			playerTeams.put(uuid, teamname);
+		else
+			playerTeams.remove(uuid);
+	}
+	
+	public void setTeamColor(String teamname, ChatColor color) {
+		teamColors.put(teamname, color);
+	}
+	
 	public void startGame() {
-		/* TODO:
-		 *  Clear inventory
-		 *  Clear hunger
-		 *  Clear HP and XP
-		 *  Spread teams (!)
-		 *  Set gamemode to Survival
-		 */
+		// List all players online and participating
+		// List all teams that participate in this match
+		ArrayList<UUID>		players	= new ArrayList<UUID>();
+		ArrayList<String>	teams	= new ArrayList<String>();
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			String team = this.playerTeams.get(p.getUniqueId());
+			if(team != null) {
+				players.add(p.getUniqueId());
+				boolean bFound = false;
+				for(String s : teams) {
+					if(team == s)
+						bFound = true;
+				}
+				if(!bFound)
+					teams.add(team);
+			}
+		}
+		// Empty the scoreboard
+		this.board = manager.getNewScoreboard();
+		// Setup the team structure and details of scoreboard
+		for(String s : teams) {
+			Team t = this.board.registerNewTeam(s);
+			ChatColor color = teamColors.get(s);
+			if(color != null) {
+				t.setPrefix(color.toString());
+			}
+			NameTagVisibility v = this.showLabels ? NameTagVisibility.ALWAYS : NameTagVisibility.HIDE_FOR_OTHER_TEAMS;
+			t.setNameTagVisibility(v);
+			t.setAllowFriendlyFire(this.teamHit);
+			for(UUID uuid : players) {
+				if(this.playerTeams.get(uuid) == s)
+				t.addPlayer(Bukkit.getPlayer(uuid));
+			}
+		}
+		Objective o = this.board.registerNewObjective("Leben", "health");
+		o.setDisplaySlot(DisplaySlot.SIDEBAR);
+		
+		// Set the scoreboard for all players online
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			p.setScoreboard(this.board);
+		}
+		
+		// Put all players in gamemode 'Spectator' so players not participating are not in the way
+		
+		// For each player participating do:
+		// +Clear inventory and XP
+		// +Fill hunger and hp
+		// +Spread teams
+		// +Put player into gamemode 'Survival'
 	}
 	
 	public void endGame() {
@@ -52,235 +125,6 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		 *  Teleport to lobby
 		 *  Remove scoreboard
 		 */
-	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if(cmd.getName().equalsIgnoreCase("ts")) {
-			if(args.length == 0) {
-				sender.sendMessage("Usage: /ts <setup|start|stop>");
-				return true;
-			}
-
-			if(args[0].equalsIgnoreCase("setup")) {
-				if(args.length <= 1) {
-					sender.sendMessage("Usage: /ts setup <team|teams>");
-					return true;
-				}
-
-				if(args[1].equalsIgnoreCase("team")) {
-					if(args.length <= 2) {
-						sender.sendMessage("Usage: /ts setup team <create|delete|add|remove|color|list>");
-						return true;
-					}
-
-					if(args[2].equalsIgnoreCase("create")) {
-						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup team create <Teamname>");
-							return true;
-						}
-						Set<Team> teams = board.getTeams();
-						for(Team t : teams) {
-							if(t.getName() == args[3]) {
-								sender.sendMessage("Team " + args[3] + " exists already");
-								return true;
-						    }
-						}
-						board.registerNewTeam(args[3]);
-						sender.sendMessage("Team " + args[3] + " created.");
-						return true;
-					} else if(args[2].equalsIgnoreCase("delete")) {
-						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup team delete <Teamname>");
-							return true;
-						}
-						Team team = board.getTeam(args[3]);
-						if(team == null){
-							sender.sendMessage("There is no team named " + args[3]);
-							return true;
-						}
-						else{
-							team.unregister();
-							sender.sendMessage("Team " + args[3] + " deleted");
-							return true;
-						}
-					} else if(args[2].equalsIgnoreCase("add")) {
-						if(args.length <= 4) {
-							sender.sendMessage("Usage: /ts setup team add <Teamname> <Player> [Player2 [...]]");
-							return true;
-						}
-						Team team = board.getTeam(args[3]);
-						if(team == null){
-							sender.sendMessage("There is no team named " + args[3]);
-							return true;
-						}
-						String playersFound = "";
-						String playersNotFound = "";
-						for (int i = 4; i < args.length; i++) {
-							Player p = Bukkit.getPlayer(args[i]);
-							if(p == null) {
-								playersNotFound += " " + args[i];
-							}
-							else {
-								playersFound += " " + args[i];
-								team.addPlayer(p);
-							}
-						}
-						if(playersFound != "")
-							sender.sendMessage("Added" + playersFound + " to " + args[3]);
-						if(playersFound != "")
-							sender.sendMessage("Players not found:" + playersNotFound);
-						return true;
-					} else if(args[2].equalsIgnoreCase("remove")) {
-						if(args.length <= 4) {
-							sender.sendMessage("Usage: /ts setup team remove <Teamname> <Player> [Player2 [...]]");
-							return true;
-						}
-						Team team = board.getTeam(args[3]);
-						if(team == null){
-							sender.sendMessage("There is no team named " + args[3]);
-							return true;
-						}
-						String playersFound = "";
-						String playersNotFound = "";
-						Set<OfflinePlayer> players = team.getPlayers();
-						OfflinePlayer p = null;
-						for (int i = 4; i < args.length; i++) {
-							for(OfflinePlayer pi : players)
-								if(args[i] == pi.getName())
-									p = pi;
-							if(p == null) {
-								playersNotFound += " " + args[i];
-							}
-							else {
-								playersFound += " " + args[i];
-								team.removePlayer(p);
-							}
-						}
-						if(playersFound != "")
-							sender.sendMessage("Removed" + playersFound + " from " + args[3]);
-						if(playersFound != "")
-							sender.sendMessage("Players not found:" + playersNotFound);
-						return true;
-					} else if(args[2].equalsIgnoreCase("color")) {
-						if(args.length <= 4) {
-							sender.sendMessage("Usage: /ts setup team color <Teamname> <color>");
-							return true;
-						}
-						Team team = board.getTeam(args[3]);
-						if(team == null){
-							sender.sendMessage("There is no team named " + args[3]);
-							return true;
-						}
-						ChatColor color = ChatColor.valueOf(args[4]);
-						//TODO: Set the teams color
-						sender.sendMessage("Coloring " + args[3] + " in " + color.toString());
-						return true;
-					} else if(args[2].equalsIgnoreCase("list")) {
-						if(args.length <= 3) {
-							sender.sendMessage("Usage: /ts setup team list <Teamname>");
-							return true;
-						}
-						Team team = board.getTeam(args[3]);
-						if(team == null){
-							sender.sendMessage("There is no team named " + args[3]);
-							return true;
-						}
-						Set<OfflinePlayer> players = team.getPlayers();
-						if(players.isEmpty()) {
-							sender.sendMessage("Team " + args[3] + " has no members");
-							return true;
-						}
-						String names = "";
-						for(OfflinePlayer p : players)
-							names += ", " + p.getName();
-						names = names.replaceFirst(", ", "");
-						sender.sendMessage("Members of " + team.getName() + ":");
-						sender.sendMessage(names);
-						return true;
-					} else {
-						sender.sendMessage("ts: No such team command: " + args[2]);
-					}
-				} else if(args[1].equalsIgnoreCase("teams")) {
-					if(args.length <= 2) {
-						sender.sendMessage("Usage: /ts setup teams <list|showLabels|teamLives|loyality|teamHit>");
-						return true;
-					}
-
-					if(args[2].equalsIgnoreCase("list")) {
-						sender.sendMessage("Listing teams.");
-					} else if(args[2].equalsIgnoreCase("showLabels")) {
-						if(args.length <= 3) {
-							sender.sendMessage("showLabels is set to " + (showLabels?"YES":"NO"));
-							//sender.sendMessage("Usage: /ts setup teams showLabels <yes|no>");
-							return true;
-						}
-						
-						if(!args[3].equalsIgnoreCase("yes") && !args[3].equalsIgnoreCase("no")) {
-							sender.sendMessage("Argument must be 'yes' or 'no'. (Not " + args[3] + ")");
-							return true;
-						}
-
-						sender.sendMessage("Setting showLabels to " + args[3]);
-						showLabels = args[3].equalsIgnoreCase("yes");
-					} else if(args[2].equalsIgnoreCase("teamLives")) {
-						if(args.length <= 3) {
-							sender.sendMessage("teamLives is set to " + teamLives);
-							//sender.sendMessage("Usage: /ts setup teams teamLives <number>");
-							return true;
-						}
-						int lives = Integer.parseInt(args[3]);
-						if(lives<0) {
-							sender.sendMessage("Argument must be equal or greater than 0. (Not " + args[3] + ")");
-							return true;
-						}
-						sender.sendMessage("Setting teamLives to " + args[3]);
-						teamLives = lives;
-					} else if(args[2].equalsIgnoreCase("loyalty")) {
-						if(args.length <= 3) {
-							sender.sendMessage("loyalty is set to " + (loyalty?"YES":"NO"));
-							//sender.sendMessage("Usage: /ts setup teams loyalty <yes|no>");
-							return true;
-						}
-						
-						if(!args[3].equalsIgnoreCase("yes") && !args[3].equalsIgnoreCase("no")) {
-							sender.sendMessage("Argument must be 'yes' or 'no'. (Not " + args[3] + ")");
-							return true;
-						}
-
-						sender.sendMessage("Setting loyalty to " + args[3]);
-						loyalty = args[3].equalsIgnoreCase("yes");
-					} else if(args[2].equalsIgnoreCase("teamHit")) {
-						if(args.length <= 3) {
-							sender.sendMessage("teamHit is set to " + (teamHit?"YES":"NO"));
-							//sender.sendMessage("Usage: /ts setup teams teamHit <yes|no>");
-							return true;
-						}
-						
-						if(!args[3].equalsIgnoreCase("yes") && !args[3].equalsIgnoreCase("no")) {
-							sender.sendMessage("Argument must be 'yes' or 'no'. (Not " + args[3] + ")");
-							return true;
-						}
-
-						sender.sendMessage("Setting teamHit to " + args[3]);
-						teamHit = args[3].equalsIgnoreCase("yes");
-					} else {
-						sender.sendMessage("ts: No such teams command: " + args[2]);
-					}
-				} else {
-					sender.sendMessage("ts: No such setup command: " + args[1]);
-				}
-
-			} else if(args[0].equalsIgnoreCase("start")) {
-				sender.sendMessage("Starting.");
-			} else if(args[0].equalsIgnoreCase("stop")) {
-				sender.sendMessage("Stopping.");
-			} else {
-				sender.sendMessage("ts: No such command: " + args[0]);
-			}
-			return true;
-		}
-		return false;
 	}
 
 }
