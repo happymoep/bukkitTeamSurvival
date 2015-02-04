@@ -98,7 +98,6 @@ public class BukkitTeamSurvival extends JavaPlugin {
 			return;
 		}
 
-		sender.sendMessage("1");
 		// Empty the scoreboard
 		//this.board = manager.getNewScoreboard(); // /- TODO: remove this temp workaround
 		Objective od = this.board.getObjective(DisplaySlot.SIDEBAR);
@@ -107,7 +106,6 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		for(Team t : this.board.getTeams()) {
 			t.unregister();
 		} // -/ TODO: remove this temp workaround
-		sender.sendMessage("2");
 		// Setup the team structure and details of scoreboard
 		for(String s : teams) {
 			Team t = this.board.registerNewTeam(s);
