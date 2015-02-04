@@ -263,7 +263,7 @@ public class BukkitTeamSurvivalCommandExecutor implements CommandExecutor{
 
 			} else if(args[0].equalsIgnoreCase("start")) {
 				sender.sendMessage("Starting");
-				plugin.startGame();
+				plugin.startGame(sender);
 			} else if(args[0].equalsIgnoreCase("stop")) {
 				sender.sendMessage("Stopping");
 				plugin.endGame();

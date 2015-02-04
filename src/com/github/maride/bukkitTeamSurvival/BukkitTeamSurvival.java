@@ -6,6 +6,10 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -66,7 +70,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		teamColors.put(teamname, color);
 	}
 	
-	public void startGame() {
+	public void startGame(CommandSender sender) {
 		// List all players online and participating
 		// List all teams that participate in this match
 		ArrayList<UUID>		players	= new ArrayList<UUID>();
@@ -84,6 +88,13 @@ public class BukkitTeamSurvival extends JavaPlugin {
 					teams.add(team);
 			}
 		}
+		
+		// If team setup invalid inform command sender
+		if(teams.size() < 2) { // TODO: Deactivated for debugging only
+			sender.sendMessage("You cannot start the game with less than two teams");
+			return;
+		}
+		
 		// Empty the scoreboard
 		this.board = manager.getNewScoreboard();
 		// Setup the team structure and details of scoreboard
@@ -104,18 +115,44 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		Objective o = this.board.registerNewObjective("Leben", "health");
 		o.setDisplaySlot(DisplaySlot.SIDEBAR);
 		
-		// Set the scoreboard for all players online
+		// Set up worldborder
+		World world = null;
+		if(sender instanceof Player) {
+			world = ((Player) sender).getWorld();
+		}
+		else {
+			if(!players.isEmpty())
+				world = Bukkit.getPlayer(players.get(0)).getWorld();
+		}
+		if(world == null)
+			return;
+		WorldBorder wb = world.getWorldBorder();
+		wb.reset();
+		wb.setCenter(0.0d, 0.0d);
+		wb.setSize(32.0d * 16.0d);	// Counted in whole chunks (Multiple of 16 Blocks)
+		
+		
 		for(Player p : Bukkit.getOnlinePlayers()) {
+			// Put all players in gamemode 'Spectator' so players not participating are not in the way
+			p.setGameMode(GameMode.SPECTATOR);
+			// Set the scoreboard for all players online
 			p.setScoreboard(this.board);
 		}
 		
-		// Put all players in gamemode 'Spectator' so players not participating are not in the way
+		// For each player participating do
+		// Clear inventory and XP, fill hunger and hp, spread teams, put player into gamemode 'Survival'
+		for(UUID uuid : players) {
+			Player p = Bukkit.getPlayer(uuid);
+			// TODO: clear inv
+			p.setExp(0.0f);
+			p.setExhaustion(0.0f);
+			p.setSaturation(20.0f);
+			p.setFoodLevel(20);
+			p.setHealth(p.getMaxHealth());
+			// TODO: spread
+			p.setGameMode(GameMode.SURVIVAL);
+		}
 		
-		// For each player participating do:
-		// +Clear inventory and XP
-		// +Fill hunger and hp
-		// +Spread teams
-		// +Put player into gamemode 'Survival'
 	}
 	
 	public void endGame() {

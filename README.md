@@ -1,5 +1,9 @@
 # bukkitTeamSurvival
 
+<font color='red'>Important:
+This plugin is in the first development phase and the master branch is indev and not yet stable. Commits should compile but are not necessarily usable.
+This will change as we reach v1.0</font>
+
 
 What?
 -----
