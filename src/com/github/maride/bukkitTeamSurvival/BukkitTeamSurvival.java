@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.NameTagVisibility;
@@ -46,7 +47,8 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		
 		// Get the scoreboard to be used
 		manager = Bukkit.getScoreboardManager();
-		board = manager.getNewScoreboard();
+		//board = manager.getNewScoreboard();
+		board = manager.getMainScoreboard(); // TODO: remove this temp workaround
 	}
 
 	public void onDisable() {
@@ -97,7 +99,11 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		}
 		
 		// Empty the scoreboard
-		this.board = manager.getNewScoreboard();
+		//this.board = manager.getNewScoreboard(); // /- TODO: remove this temp workaround
+		this.board.getObjective(DisplaySlot.SIDEBAR).unregister();
+		for(Team t : this.board.getTeams()) {
+			t.unregister();
+		} // -/ TODO: remove this temp workaround
 		// Setup the team structure and details of scoreboard
 		for(String s : teams) {
 			Team t = this.board.registerNewTeam(s);
@@ -144,7 +150,9 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		// Clear inventory and XP, fill hunger and hp, spread teams, put player into gamemode 'Survival'
 		for(UUID uuid : players) {
 			Player p = Bukkit.getPlayer(uuid);
-			// TODO: clear inv
+			p.getInventory().clear();
+			// creates an array of 4 ItemStacks, initialized with null, thus everything is set to nothing - Bone008 on bukkit.org
+			p.getInventory().setArmorContents(new ItemStack[4]);	// clear does not clear armor (untested statement, read on forums)
 			p.setExp(0.0f);
 			p.setExhaustion(0.0f);
 			p.setSaturation(20.0f);
