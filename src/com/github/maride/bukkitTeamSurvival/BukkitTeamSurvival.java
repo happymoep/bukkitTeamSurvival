@@ -90,7 +90,8 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		}
 		
 		// If team setup invalid inform command sender
-		if(teams.size() < 2) { // TODO: Deactivated for debugging only
+		int minTeams = 2; // TODO: Set to 1 for debugging, set to 2 for production
+		if(teams.size() < minTeams) {
 			sender.sendMessage("You cannot start the game with less than two teams");
 			return;
 		}
