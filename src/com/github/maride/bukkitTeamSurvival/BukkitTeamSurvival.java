@@ -47,8 +47,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		
 		// Get the scoreboard to be used
 		manager = Bukkit.getScoreboardManager();
-		//board = manager.getNewScoreboard();
-		board = manager.getMainScoreboard(); // TODO: remove this temp workaround
+		board = manager.getNewScoreboard();
 	}
 
 	public void onDisable() {
@@ -99,11 +98,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		}
 		
 		// Empty the scoreboard
-		//this.board = manager.getNewScoreboard(); // /- TODO: remove this temp workaround
-		this.board.getObjective(DisplaySlot.SIDEBAR).unregister();
-		for(Team t : this.board.getTeams()) {
-			t.unregister();
-		} // -/ TODO: remove this temp workaround
+		this.board = manager.getNewScoreboard();
 		// Setup the team structure and details of scoreboard
 		for(String s : teams) {
 			Team t = this.board.registerNewTeam(s);
