@@ -26,8 +26,8 @@ public class BukkitTeamSurvival extends JavaPlugin {
 	ScoreboardManager	manager	= null;	// Assigned when plugin gets enabled
 	Scoreboard			board	= null;	// Assigned when plugin gets enabled
 	
-	HashMap<UUID, String>		playerTeams;
-	HashMap<String, ChatColor>	teamColors;
+	HashMap<UUID, String>		playerTeams	= null;
+	HashMap<String, ChatColor>	teamColors	= null;
 	//ArrayList<BtsTeam>		teams;
 	
 	boolean	showLabels	= false;
@@ -35,24 +35,60 @@ public class BukkitTeamSurvival extends JavaPlugin {
 	boolean	loyalty		= false;
 	boolean	teamHit		= false;
 	
+	@SuppressWarnings("unchecked")
+	private void loadData() {
+		// Load HashMap for player-team and team-color association from file if files exist
+		try {
+			playerTeams = (HashMap<UUID, String>) FileManager.load("playerTeams.bin");
+		}
+		catch (Exception e) {
+			this.getLogger().info("The file \"playerTeams.bin\" does not exist. Creating new (empty) database instead.");
+		}
+		try {
+			teamColors = (HashMap<String, ChatColor>) FileManager.load("teamColors.bin");
+		}
+		catch (Exception e) {
+			this.getLogger().info("The file \"teamColors.bin\" does not exist. Creating new (empty) database instead.");
+		}
+		// Create new HashMap objects in case the file loading did not work
+		if(playerTeams == null) {
+			playerTeams = new HashMap<UUID, String>();
+		}
+		if(teamColors == null) {
+			teamColors = new HashMap<String, ChatColor>();
+		}
+	}
+	
+	private void saveData() {
+		// Save HashMap for player-team and team-color association to file
+		try {
+			FileManager.save(playerTeams, "playerTeams.bin");
+		}
+		catch (Exception e) {
+			this.getLogger().info("Could not store database in file \"playerTeams.bin\".");
+		}
+		try {
+			FileManager.save(teamColors, "teamColors.bin");
+		}
+		catch (Exception e) {
+			this.getLogger().info("Could not store database in file \"teamColors.bin\".");
+		}
+	}
+	
 	public void onEnable() {
-		// Load HashMap that stores a teamname for each Player
-		// TODO: Load HashMap from file (if available) instead of creating a new one
-		playerTeams = new HashMap<UUID, String>();
-		teamColors = new HashMap<String, ChatColor>();
+		loadData();
 		
 		// Register command handler
 		cmdExecutor = new BukkitTeamSurvivalCommandExecutor(this);
 		getCommand("bts").setExecutor(cmdExecutor);
 		
-		// Get the scoreboard to be used
+		// Get/Create the scoreboard to be used
 		manager = Bukkit.getScoreboardManager();
 		board = manager.getNewScoreboard();
 	}
 
 	public void onDisable() {
-		// Save HashMap that stores  a teamname for each Player
-		// TODO: Save HashMap to file
+		saveData();
 
 		/* TODO:
 		 * 	Clear scoreboard (destroy scoreboard?)
@@ -91,8 +127,8 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		}
 		
 		// If team setup invalid inform command sender
-		int minTeams = 1; // TODO: Set to 1 for debugging, set to 2 for production
-		if(teams.size() < minTeams) {
+		int minTeams = 2;
+		if(teams.size() < 1) { // Set to 1 for debugging to get a compiler warning as a reminder
 			sender.sendMessage("You cannot start the game with less than two teams");
 			return;
 		}
