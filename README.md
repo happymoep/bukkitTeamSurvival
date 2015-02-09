@@ -17,7 +17,7 @@ The world is deleted afterwards to ensure that you always get new terrain, ores,
 Command structure
 -----------------
 
-*/ts*
+*/bts*
 
 - `setup` Setup commands
 	- `team` Commands regarding **one** Team

@@ -23,7 +23,7 @@ public class BukkitTeamSurvivalCommandExecutor implements CommandExecutor{
 	 * @return true if usage information was displayed to sender and false if the input still needs to be handled elsewhere
 	 */
 	private boolean displayUsage(CommandSender sender, Command cmd, String label, String[] args) {
-		if(cmd.getName().equalsIgnoreCase("ts")) {
+		if(cmd.getName().equalsIgnoreCase("bts")) {
 			if(args.length == 0) {
 				sender.sendMessage("Usage: " + cmd.getName() + " <setup|start|stop>");
 				return true;
@@ -128,7 +128,7 @@ public class BukkitTeamSurvivalCommandExecutor implements CommandExecutor{
 		if(displayUsage(sender, cmd, label, args))
 			return true;
 		
-		if(cmd.getName().equalsIgnoreCase("ts")) {
+		if(cmd.getName().equalsIgnoreCase("bts")) {
 			if(args.length <= 0) {
 				return true;
 			}
@@ -255,10 +255,10 @@ public class BukkitTeamSurvivalCommandExecutor implements CommandExecutor{
 						sender.sendMessage("Setting teamHit to " + args[3]);
 						plugin.teamHit = args[3].equalsIgnoreCase("yes");
 					} else {
-						sender.sendMessage("ts: No such teams command: " + args[2]);
+						sender.sendMessage(cmd.getName() + ": No such teams command: " + args[2]);
 					}
 				} else {
-					sender.sendMessage("ts: No such setup command: " + args[1]);
+					sender.sendMessage(cmd.getName() + ": No such setup command: " + args[1]);
 				}
 
 			} else if(args[0].equalsIgnoreCase("start")) {

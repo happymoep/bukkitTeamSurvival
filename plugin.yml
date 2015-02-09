@@ -9,11 +9,12 @@ main: com.github.maride.bukkitTeamSurvival.BukkitTeamSurvival
 prefix: BTS
 
 commands:
-   ts:
+   bts:
       description: Main TeamSurvival command
-      usage: /ts <setup|start|stop>
-      permission: bukkitTeamSurvival.ts
-      permission-message: You don't have permission bukkitTeamSurvival.ts
+      aliases: [ts]
+      permission: bukkitTeamSurvival.bts
+      permission-message: You don't have permission bukkitTeamSurvival.bts
+      usage: /&lt;command&gt; <setup|start|stop>
 
 permissions:
    bukkitTeamSurvival.ts:

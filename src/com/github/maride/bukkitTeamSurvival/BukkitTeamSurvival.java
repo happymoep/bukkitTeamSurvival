@@ -43,7 +43,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		
 		// Register command handler
 		cmdExecutor = new BukkitTeamSurvivalCommandExecutor(this);
-		getCommand("ts").setExecutor(cmdExecutor);
+		getCommand("bts").setExecutor(cmdExecutor);
 		
 		// Get the scoreboard to be used
 		manager = Bukkit.getScoreboardManager();
@@ -91,7 +91,7 @@ public class BukkitTeamSurvival extends JavaPlugin {
 		}
 		
 		// If team setup invalid inform command sender
-		int minTeams = 2; // TODO: Set to 1 for debugging, set to 2 for production
+		int minTeams = 1; // TODO: Set to 1 for debugging, set to 2 for production
 		if(teams.size() < minTeams) {
 			sender.sendMessage("You cannot start the game with less than two teams");
 			return;
@@ -150,8 +150,8 @@ public class BukkitTeamSurvival extends JavaPlugin {
 			p.getInventory().setArmorContents(new ItemStack[4]);	// clear does not clear armor (untested statement, read on forums)
 			p.setExp(0.0f);
 			p.setExhaustion(0.0f);
+			p.setFoodLevel(20);	// Set food before saturation because: Saturation level can never exceed hunger level (wiki statement)
 			p.setSaturation(20.0f);
-			p.setFoodLevel(20);
 			p.setHealth(p.getMaxHealth());
 			// TODO: spread
 			p.setGameMode(GameMode.SURVIVAL);
