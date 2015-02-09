@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.command.CommandSender;
@@ -190,6 +191,11 @@ public class BukkitTeamSurvival extends JavaPlugin {
 			p.setSaturation(20.0f);
 			p.setHealth(p.getMaxHealth());
 			// TODO: spread
+			// temporary fix: place the player on ground (surface) to avoid falling, suffocating etc.
+			Location playerLocation = p.getLocation();
+			Location surfaceLocation = p.getWorld().getHighestBlockAt(playerLocation).getLocation();
+			p.teleport(surfaceLocation);
+			// end of temporary fix
 			p.setGameMode(GameMode.SURVIVAL);
 		}
 		
