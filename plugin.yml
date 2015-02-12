@@ -1,5 +1,5 @@
 name: BukkitTeamSurvival
-version: 0.2
+version: 0.3
 description: This plugin helps set up a team deathmatch.
 authors: [happymoep, maride]
 website: https://github.com/maride/bukkitTeamSurvival
@@ -10,13 +10,22 @@ prefix: BTS
 
 commands:
    bts:
-      description: Main TeamSurvival command
+      description: Main BukkitTeamSurvival command
       aliases: [ts]
       permission: bukkitTeamSurvival.bts
       permission-message: You don't have permission bukkitTeamSurvival.bts
-      usage: /&lt;command&gt; <setup|start|stop>
+      usage: /bts <lobby|team|settings>
+   btss:
+      description: BukkitTeamSurvival Lobby
+      aliases: [tss]
+      permission: bukkitTeamSurvival.btss
+      permission-message: You don't have permission bukkitTeamSurvival.btss
+      usage: /btss <lobby|team|settings|start|stop>
 
 permissions:
-   bukkitTeamSurvival.ts:
-      description: Allows you to configure the plugin
+   bukkitTeamSurvival.bts:
+      description: Allows you to use the plugin's user commands
+      default: true
+   bukkitTeamSurvival.btss:
+      description: Allows you to use the plugin's admin commands
       default: op
